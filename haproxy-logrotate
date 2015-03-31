@@ -1,0 +1,26 @@
+# logrotate, and allow devuser1 to read the logfiles, after logrotation, which runs as root in shared cloud
+#    /home/g/haproxy-1.5.11# cat /etc/logrotate.d/haproxy
+    /home/g/haproxy-1.5.11/haproxy.log {
+        missingok
+        notifempty
+        sharedscripts
+        rotate 120
+        daily
+        compress
+        postrotate
+            reload rsyslog >/dev/null 2>&1 || true
+            chmod 777 /home/devuser1/haproxy-1.5.11/haproxy.log
+        endscript
+    }
+        /home/g/haproxy-1.5.11/haproxy-status.log {
+        missingok
+        notifempty
+        sharedscripts
+        rotate 120
+        daily
+        compress
+        postrotate
+            reload rsyslog >/dev/null 2>&1 || true
+            chmod 777 /home/devuser1/haproxy-1.5.11/haproxy-status.log
+        endscript
+    }
